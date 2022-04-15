@@ -2,7 +2,7 @@
 {
     public class SiteInvoice : BaseInvoice
     {
-        public string From { get; set; }
+        public string Payee { get; set; }
         public byte[] InvoiceFile { get; set; }
     }
 }

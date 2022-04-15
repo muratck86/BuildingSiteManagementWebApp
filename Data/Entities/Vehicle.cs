@@ -9,7 +9,7 @@
         public string Color { get; set; }
         public bool IsDeleted { get; set; }
 
-        public int ResidentId { get; set; }
+        public string ResidentId { get; set; }
         public Resident Resident { get; set; }
     }
 }

@@ -6,9 +6,9 @@
         public int No { get; set; }
         public int BuildingId { get; set; }
         public Building Building { get; set; }
-        public int OwnerId { get; set; }
+        public string OwnerId { get; set; }
         public AppUser Owner { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public AppUser User { get; set; }
     }
 }

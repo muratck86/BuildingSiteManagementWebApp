@@ -1,4 +1,6 @@
-﻿namespace BuildingSiteManagementWebApp.Data.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BuildingSiteManagementWebApp.Data.Entities
 {
     public class Building : BaseEntity
     {
