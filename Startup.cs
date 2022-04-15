@@ -1,4 +1,5 @@
 using BuildingSiteManagementWebApp.Data;
+using BuildingSiteManagementWebApp.Data.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,8 +33,11 @@ namespace BuildingSiteManagementWebApp
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+                //.AddDefaultUI() // Uncomment
+                //.AddDefaultTokenProviders(); //Uncomment
             services.AddControllersWithViews();
         }
 

@@ -2,7 +2,7 @@
 
 namespace BuildingSiteManagementWebApp.Data.Entities
 {
-    public class Person : IdentityUser
+    public class AppUser : IdentityUser, IEntity
     {
         public string NationalId { get; set; }
         public string Name { get; set; }
