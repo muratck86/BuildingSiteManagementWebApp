@@ -230,7 +230,7 @@ namespace BuildingSiteManagementWebApp.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -504,6 +504,14 @@ namespace BuildingSiteManagementWebApp.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeTypes_Name",
+                schema: "Identity",
+                table: "HomeTypes",
+                column: "Name",
+                unique: true,
+                filter: "Name IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_ReceiverId",

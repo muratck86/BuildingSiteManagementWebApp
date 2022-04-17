@@ -61,6 +61,7 @@ namespace BuildingSiteManagementWebApp.Data
             {
                 entity.ToTable("HomeTypes")
                     .Property(h => h.Name).IsRequired();
+                entity.HasIndex(h => h.Name).HasFilter("Name IS NOT NULL").IsUnique();
             });
             builder.Entity<Message>(entity =>
             {

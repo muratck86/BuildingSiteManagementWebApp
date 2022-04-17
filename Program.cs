@@ -1,5 +1,8 @@
+using BuildingSiteManagementWebApp.Business.Abstracts;
+using BuildingSiteManagementWebApp.Business.Concretes;
 using BuildingSiteManagementWebApp.Data;
 using BuildingSiteManagementWebApp.Data.Entities;
+using BuildingSiteManagementWebApp.Data.Repository.Concretes;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -27,8 +30,10 @@ namespace BuildingSiteManagementWebApp
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    //await ContextSeed.SeedRoleAsync(userManager, roleManager);
-                    //await ContextSeed.SeedSuperAdminAsync(userManager, roleManager);
+                    var homeTypeManager = services.GetRequiredService<IHomeTypeManager>();
+                    await ContextSeed.SeedRolesAsync(userManager, roleManager);
+                    await ContextSeed.SeedSuperAdminAsync(userManager, roleManager);
+                    await ContextSeed.SeedHomeTypesAsync(homeTypeManager);
                 }
                 catch (Exception ex)
                 {

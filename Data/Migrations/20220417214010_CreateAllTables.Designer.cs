@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BuildingSiteManagementWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220415233156_CreateAllTables")]
+    [Migration("20220417214010_CreateAllTables")]
     partial class CreateAllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,9 +162,13 @@ namespace BuildingSiteManagementWebApp.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("Name IS NOT NULL");
 
                     b.ToTable("HomeTypes");
                 });

@@ -1,5 +1,9 @@
+using BuildingSiteManagementWebApp.Business.Abstracts;
+using BuildingSiteManagementWebApp.Business.Concretes;
 using BuildingSiteManagementWebApp.Data;
 using BuildingSiteManagementWebApp.Data.Entities;
+using BuildingSiteManagementWebApp.Data.Repository.Abstracts;
+using BuildingSiteManagementWebApp.Data.Repository.Concretes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -32,6 +36,8 @@ namespace BuildingSiteManagementWebApp
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
+            services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddTransient<IHomeTypeManager, HomeTypeManager>();
             services.AddControllersWithViews();
         }
 
