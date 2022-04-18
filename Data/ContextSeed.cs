@@ -36,12 +36,12 @@ namespace BuildingSiteManagementWebApp.Data
             var superAdmin = new AppUser
             {
                 UserName = "SuperAdmin",
-                NationalId = "1",
+                NationalId = "1224456",
                 Name = "Super",
                 LastName = "Admin",
                 Email = "superadmin@mail.com",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
+                PhoneNumberConfirmed = true
             };
 
             if(userManager.Users.All(u => u.Id != superAdmin.Id))
@@ -49,7 +49,7 @@ namespace BuildingSiteManagementWebApp.Data
                 var user = await userManager.FindByEmailAsync(superAdmin.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(superAdmin, "123Super$$");
+                    await userManager.CreateAsync(superAdmin, "123Pa$$word.");
                     await userManager.AddToRolesAsync(superAdmin, roleManager.Roles.Select(r => r.Name));
                 }
             }
