@@ -2,7 +2,7 @@
 {
     public class Residence : BaseEntity
     {
-        public int Floor { get; set; }
+        public string Floor { get; set; }
         public int No { get; set; }
 
         public int BuildingId { get; set; }
@@ -11,5 +11,6 @@
         public AppUser Owner { get; set; }
         public string UserId { get; set; }
         public AppUser User { get; set; }
+        public ResidenceType ResidenceType { get; set; }
     }
 }

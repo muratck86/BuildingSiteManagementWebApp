@@ -55,7 +55,7 @@ namespace BuildingSiteManagementWebApp.Data
             {
                 entity.ToTable("Buildings")
                     .Property(b => b.Floors).IsRequired();
-                entity.Property(b => b.Name).IsRequired();
+                entity.HasIndex(b => b.Name).IsUnique();
             });
             builder.Entity<HomeType>(entity =>
             {
@@ -81,10 +81,8 @@ namespace BuildingSiteManagementWebApp.Data
             builder.Entity<Residence>(entity =>
             {
                 entity.ToTable("Residences")
-                    .Property(r => r.OwnerId).IsRequired();
-                entity.Property(r => r.UserId).IsRequired();
-                entity.HasOne(r => r.Owner).WithMany(u => u.OwnedResidences).HasForeignKey(r => r.OwnerId).OnDelete(DeleteBehavior.Restrict);
-                entity.HasOne(r => r.User).WithMany(u => u.RentedResidences).HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.Restrict);
+                    .HasOne(r => r.Owner).WithMany(u => u.OwnedResidences).HasForeignKey(r => r.OwnerId).OnDelete(DeleteBehavior.Restrict);
+                    entity.HasOne(r => r.User).WithMany(u => u.RentedResidences).HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.Restrict);
             });
             builder.Entity<ResidenceInvoice>(entity =>
             {

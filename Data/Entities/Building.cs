@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BuildingSiteManagementWebApp.Data.Entities
 {
@@ -6,5 +7,9 @@ namespace BuildingSiteManagementWebApp.Data.Entities
     {
         public string Name { get; set; }
         public int Floors { get; set; }
+        public int Basements { get; set; }
+        public bool HasRoof { get; set; }
+
+        public virtual List<Residence> Residences { get; set; }
     }
 }

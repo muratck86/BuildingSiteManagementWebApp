@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BuildingSiteManagementWebApp.Data.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BuildingSiteManagementWebApp.Business.Abstracts
@@ -10,7 +11,9 @@ namespace BuildingSiteManagementWebApp.Business.Abstracts
         Task DeleteAsync(string name);
         Task ChangeNameAsync(int id, string newName);
         Task ChangeNameAsync(string currentName, string newName);
+        Task UpdateAsync(HomeType homeType);
         Task<string> GetNameAsync(int id);
         Task<List<string>> GetAllNames();
+        Task<HomeType> GetAsync(int id);
     }
 }

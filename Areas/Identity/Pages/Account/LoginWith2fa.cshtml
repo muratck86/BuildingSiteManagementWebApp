@@ -1,10 +1,11 @@
 ﻿@page
+@using BuildingSiteManagementWebApp.Common.Constants
 @model LoginWith2faModel
 @{
-    ViewData["Title"] = "Go to Login";
+    ViewData["Title"] = @TextsLang.GoToLogIn;
 }
 
 <h1>@ViewData["Title"]</h1>
 <li class="nav-item">
-    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">@TextsLang.Loginbtn</a>
 </li>

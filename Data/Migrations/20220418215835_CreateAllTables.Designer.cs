@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BuildingSiteManagementWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220417214010_CreateAllTables")]
+    [Migration("20220418215835_CreateAllTables")]
     partial class CreateAllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,7 +19,7 @@ namespace BuildingSiteManagementWebApp.Data.Migrations
             modelBuilder
                 .HasDefaultSchema("Identity")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.15")
+                .HasAnnotation("ProductVersion", "5.0.16")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("BuildingSiteManagementWebApp.Data.Entities.AppUser", b =>
@@ -141,14 +141,23 @@ namespace BuildingSiteManagementWebApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Basements")
+                        .HasColumnType("int");
+
                     b.Property<int>("Floors")
                         .HasColumnType("int");
 
+                    b.Property<bool>("HasRoof")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.ToTable("Buildings");
                 });
@@ -252,18 +261,16 @@ namespace BuildingSiteManagementWebApp.Data.Migrations
                     b.Property<int>("BuildingId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Floor")
-                        .HasColumnType("int");
+                    b.Property<string>("Floor")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("No")
                         .HasColumnType("int");
 
                     b.Property<string>("OwnerId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -294,7 +301,8 @@ namespace BuildingSiteManagementWebApp.Data.Migrations
 
                     b.HasIndex("HomeTypeId");
 
-                    b.HasIndex("ResidenceId");
+                    b.HasIndex("ResidenceId")
+                        .IsUnique();
 
                     b.ToTable("ResidenceTypes");
                 });
@@ -563,7 +571,7 @@ namespace BuildingSiteManagementWebApp.Data.Migrations
             modelBuilder.Entity("BuildingSiteManagementWebApp.Data.Entities.Residence", b =>
                 {
                     b.HasOne("BuildingSiteManagementWebApp.Data.Entities.Building", "Building")
-                        .WithMany()
+                        .WithMany("Residences")
                         .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -571,14 +579,12 @@ namespace BuildingSiteManagementWebApp.Data.Migrations
                     b.HasOne("BuildingSiteManagementWebApp.Data.Entities.AppUser", "Owner")
                         .WithMany("OwnedResidences")
                         .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("BuildingSiteManagementWebApp.Data.Entities.AppUser", "User")
                         .WithMany("RentedResidences")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Building");
 
@@ -596,8 +602,8 @@ namespace BuildingSiteManagementWebApp.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("BuildingSiteManagementWebApp.Data.Entities.Residence", "Residence")
-                        .WithMany()
-                        .HasForeignKey("ResidenceId")
+                        .WithOne("ResidenceType")
+                        .HasForeignKey("BuildingSiteManagementWebApp.Data.Entities.ResidenceType", "ResidenceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -718,6 +724,16 @@ namespace BuildingSiteManagementWebApp.Data.Migrations
                     b.Navigation("RentedResidences");
 
                     b.Navigation("SentMessages");
+                });
+
+            modelBuilder.Entity("BuildingSiteManagementWebApp.Data.Entities.Building", b =>
+                {
+                    b.Navigation("Residences");
+                });
+
+            modelBuilder.Entity("BuildingSiteManagementWebApp.Data.Entities.Residence", b =>
+                {
+                    b.Navigation("ResidenceType");
                 });
 #pragma warning restore 612, 618
         }

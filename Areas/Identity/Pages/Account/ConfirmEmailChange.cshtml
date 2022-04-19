@@ -1,8 +1,11 @@
 ﻿@page
+@using BuildingSiteManagementWebApp.Common.Constants
 @model ConfirmEmailChangeModel
 @{
-    ViewData["Title"] = "Confirm email change";
+    ViewData["Title"] = @TextsLang.GoToLogIn;
 }
 
 <h1>@ViewData["Title"]</h1>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+<li class="nav-item">
+    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">@TextsLang.Loginbtn</a>
+</li>

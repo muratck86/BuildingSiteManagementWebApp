@@ -36,7 +36,7 @@ namespace BuildingSiteManagementWebApp
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
-            services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddTransient<IHomeTypeManager, HomeTypeManager>();
             services.AddControllersWithViews();
         }

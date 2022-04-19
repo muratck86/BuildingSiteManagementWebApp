@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace BuildingSiteManagementWebApp.Data.Repository.Concretes
 {
@@ -21,16 +22,34 @@ namespace BuildingSiteManagementWebApp.Data.Repository.Concretes
             Context.Set<T>().Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes)
         {
-            return Context.Set<T>().SingleOrDefault(filter);
+            IQueryable<T> q = Context.Set<T>();
+            if (includes is not null && includes.Count() > 0)
+            {
+                foreach (var obj in includes)
+                {
+                    q = q.Include(obj);
+                }
+            }
+
+            return await q.SingleOrDefaultAsync(filter);
+
         }
 
-        public IQueryable<T> GetAll(Expression<Func<T, bool>> filter = null)
+        public IQueryable<T> GetAll(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includes)
         {
+            IQueryable<T> q = Context.Set<T>();
+            if (includes is not null && includes.Count() > 0)
+            {
+                foreach (var obj in includes)
+                {
+                    q = q.Include(obj);
+                }
+            }
             if (filter == null)
-                return Context.Set<T>().AsQueryable();
-            return Context.Set<T>().Where(filter);
+                return q;
+            return q.Where(filter);
         }
 
         public void Update(T entity)
@@ -38,15 +57,15 @@ namespace BuildingSiteManagementWebApp.Data.Repository.Concretes
             Context.Entry(entity).State = EntityState.Modified;
         }
 
-        public void Delete(Expression<Func<T, bool>> filter)
+        public async Task DeleteAsync(Expression<Func<T, bool>> filter)
         {
-            var entity = Context.Entry(filter);
+            var entity =await Context.Set<T>().SingleOrDefaultAsync(filter);
             Context.Entry(entity).State = EntityState.Deleted;
         }
 
-        public void Commit()
+        public async Task CommitAsync()
         {
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
         }
 
         public void Dispose()
