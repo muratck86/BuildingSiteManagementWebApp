@@ -7,10 +7,23 @@ namespace BuildingSiteManagementWebApp.Business.Abstracts
 {
     public interface IResidenceManager
     {
-        Task AddResidenceAsync(Residence residence);
-        Task<List<Residence>> GetAllResidencesAsync();
-        Task<Residence> GetResidenceByIdAsync(int id);
-        Task UpdateResidenceAsync(Residence residence);
-        Task DeleteResidenceAsync(int id);
+        Task AddAsync(Residence residence);
+        Task<List<Residence>> GetAllAsync();
+        Task<List<Residence>> GetAllByBuildingIdAsync(int id);
+        Task<List<Residence>> GetAllByOwnerIdAsync(string id);
+
+        Task<Residence> GetByIdAsync(int id);
+        Task UpdateAsync(Residence residence);
+        Task DeleteAsync(int id);
+    }
+
+    public interface IMessageManager
+    {
+        Task SendMessageToAdmin(Message message);
+        Task SendMessageFromAdmin(Message message);
+        Task<List<Message>> GetAllAsync();
+        Task<Message> GetById(int id);
+        Task UpdateAsync(Message message);
+        Task DeleteAsync(int id);
     }
 }

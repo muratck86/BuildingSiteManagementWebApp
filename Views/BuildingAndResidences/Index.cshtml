@@ -1,0 +1,39 @@
+﻿@using BuildingSiteManagementWebApp.Common.Constants
+@model List<BuildingViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@TextsLang.Buildings</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@TextsLang.BuildingName</th>
+            <th>@TextsLang.NumberOfFloors</th>
+            <th>@TextsLang.NumberOfBasements</th>
+            <th>@TextsLang.HasRoof</th>
+            <th>@TextsLang.NumberOfResidences</th>
+            <th>@TextsLang.Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var building in Model)
+        {
+            <tr>
+                <td>@building.Name</td>
+                <td>@building.NumberOfFloors</td>
+                <td>@building.Basements</td>
+                <td>@(building.HasRoof ? TextsLang.Exists : TextsLang.NotExists)</td>
+                <td>@building.NumberOfResidences</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="Manage" asp-route-buildingId="@building.Id">@TextsLang.ManageResidences</a>
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="Delete" asp-route-buildingId="@building.Id">@TextsLang.Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

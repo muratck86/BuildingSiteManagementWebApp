@@ -1,4 +1,11 @@
 ﻿@using BuildingSiteManagementWebApp.Common.Constants
+@using BuildingSiteManagementWebApp.Data.Entities
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using System.Reflection
+@inject SignInManager<AppUser> SignInManager
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,9 +29,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@TextsLang.HomePage</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="BuildingAndResidences" asp-action="Index">@TextsLang.Residences</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

@@ -1,4 +1,5 @@
-﻿using BuildingSiteManagementWebApp.Data.Entities;
+﻿using BuildingSiteManagementWebApp.Business.Dtos;
+using BuildingSiteManagementWebApp.Data.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,10 +7,10 @@ namespace BuildingSiteManagementWebApp.Business.Abstracts
 {
     public interface IBuildingManager
     {
-        Task AddBuildingAsync(Building building);
-        Task<List<Building>> GetAllBuildingsAsync();
+        Task AddAsync(CreateBuildingDto building);
+        Task<List<Building>> GetAllAsync();
         Task<Building> GetByIdAsync(int id);
-        Task UpdateBuildingAsync(Building building);
-        Task DeleteBuildingAsync(int id);
+        Task UpdateAsync(Building building);
+        Task DeleteAsync(int id);
     }
 }

@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 namespace BuildingSiteManagementWebApp
 {
@@ -32,12 +33,15 @@ namespace BuildingSiteManagementWebApp
             //services.AddDatabaseDeveloperPageExceptionFilter();
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddTransient<IHomeTypeManager, HomeTypeManager>();
+            services.AddTransient<IBuildingManager, BuildingManager>();
+            services.AddTransient<IResidenceManager, ResidenceManager>();
             services.AddControllersWithViews();
         }
 

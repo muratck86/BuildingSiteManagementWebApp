@@ -54,7 +54,7 @@ namespace BuildingSiteManagementWebApp.Data
             builder.Entity<Building>(entity =>
             {
                 entity.ToTable("Buildings")
-                    .Property(b => b.Floors).IsRequired();
+                    .Property(b => b.NumberOfFloors).IsRequired();
                 entity.HasIndex(b => b.Name).IsUnique();
             });
             builder.Entity<HomeType>(entity =>
@@ -87,6 +87,7 @@ namespace BuildingSiteManagementWebApp.Data
             builder.Entity<ResidenceInvoice>(entity =>
             {
                 entity.ToTable("ResidenceInvoices");
+                entity.Navigation(e => e.Residence).AutoInclude();
             });
             builder.Entity<ResidenceType>(entity =>
             {

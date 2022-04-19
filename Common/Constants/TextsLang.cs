@@ -33,6 +33,22 @@
         public static string Error = "Hata";
         public static string ErrorMessage = "İşlem sırasında bir hata oluştu.";
         public static string Welcome = "Hoşgeldiniz.";
+        public static string SettingsHeader = "Ayarlar";
+        public static string SiteResidencesSettingsHeader = "Blok ve bağımsız bölüm ayarları.";
+        public static string Buildings = "Bloklar";
+        public static string BuildingName = "Blok Adı";
+        public static string NumberOfFloors = "Kat Sayısı";
+        public static string HasRoof = "Çatı Dublex";
+        public static string NumberOfBasements = "Bodrum Kat Sayısı";
+        public static string NumberOfResidences = "Bağımsız Bölüm Sayısı";
+        public static string Action = "İşlem";
+        public static string Actions = "İşlemler";
+        public static string Exists = "Var";
+        public static string NotExists = "Yok";
+        public static string ManageResidences = "Bağımsız Bölümleri Yönet";
+        public static string Delete = "Sil";
+        public static string Residences = "Bağımsız Bölümler";
+
 
     }
 }

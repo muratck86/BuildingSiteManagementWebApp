@@ -1,4 +1,6 @@
-﻿using BuildingSiteManagementWebApp.Business.Abstracts;
+﻿using AutoMapper;
+using BuildingSiteManagementWebApp.Business.Abstracts;
+using BuildingSiteManagementWebApp.Business.Dtos;
 using BuildingSiteManagementWebApp.Data.Entities;
 using BuildingSiteManagementWebApp.Data.Repository.Abstracts;
 using Microsoft.EntityFrameworkCore;
@@ -12,21 +14,22 @@ namespace BuildingSiteManagementWebApp.Business.Concretes
 
     public class BuildingManager : IBuildingManager
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly IRepository<Building> _repository;
+        private readonly IMapper _mapper;
 
         public BuildingManager(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
-            _repository = _serviceProvider.GetRequiredService<IRepository<Building>>();
+            _repository = serviceProvider.GetRequiredService<IRepository<Building>>();
+            _mapper = serviceProvider.GetRequiredService<IMapper>();
         }
 
-        public async Task AddBuildingAsync(Building building)
+        public async Task AddAsync(CreateBuildingDto building)
         {
-            _repository.Create(building);
+            var newBuilding = _mapper.Map<Building>(building);
+            _repository.Create(newBuilding);
             await _repository.CommitAsync();
         }
-        public async Task<List<Building>> GetAllBuildingsAsync()
+        public async Task<List<Building>> GetAllAsync()
         {
             return await _repository.GetAll(null, r => r.Residences).ToListAsync();
         }
@@ -34,12 +37,12 @@ namespace BuildingSiteManagementWebApp.Business.Concretes
         {
             return await _repository.GetAsync(t => t.Id == id, x => x.Residences);
         }
-        public async Task UpdateBuildingAsync(Building building)
+        public async Task UpdateAsync(Building building)
         {
             _repository.Update(building);
             await _repository.CommitAsync();
         }
-        public async Task DeleteBuildingAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             await _repository.DeleteAsync(t => t.Id == id);
             await _repository.CommitAsync();

@@ -3,7 +3,7 @@
     public class Residence : BaseEntity
     {
         public string Floor { get; set; }
-        public int No { get; set; }
+        public int DoorNo { get; set; }
 
         public int BuildingId { get; set; }
         public Building Building { get; set; }
