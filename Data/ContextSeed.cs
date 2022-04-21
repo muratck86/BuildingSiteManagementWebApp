@@ -36,7 +36,7 @@ namespace BuildingSiteManagementWebApp.Data
             var superAdmin = new AppUser
             {
                 UserName = "SuperAdmin",
-                NationalId = "1224456",
+                NationalId = "60923687528",
                 Name = "Super",
                 LastName = "Admin",
                 Email = "superadmin@mail.com",
@@ -51,6 +51,52 @@ namespace BuildingSiteManagementWebApp.Data
                 {
                     await userManager.CreateAsync(superAdmin, "123Pa$$word.");
                     await userManager.AddToRolesAsync(superAdmin, roleManager.Roles.Select(r => r.Name));
+                }
+            }
+        }
+        public static async Task SeedAdminAsync(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            var admin = new AppUser
+            {
+                UserName = "Admin",
+                NationalId = "39797145038",
+                Name = "Site",
+                LastName = "Yöneticisi",
+                Email = "admin@mail.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+
+            if (userManager.Users.All(u => u.Id != admin.Id))
+            {
+                var user = await userManager.FindByEmailAsync(admin.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(admin, "123Pa$$word.");
+                    await userManager.AddToRolesAsync(admin, roleManager.Roles.Select(r => r.Name).Where(n => n == "Admin" || n == "User"));
+                }
+            }
+        }
+        public static async Task SeedUserAsync(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            var user = new AppUser
+            {
+                UserName = "User",
+                NationalId = "96411137282",
+                Name = "Normal",
+                LastName = "Kullanıcı",
+                Email = "user@mail.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+
+            if (userManager.Users.All(u => u.Id != user.Id))
+            {
+                var u = await userManager.FindByEmailAsync(user.Email);
+                if (u == null)
+                {
+                    await userManager.CreateAsync(user, "123Pa$$word.");
+                    await userManager.AddToRolesAsync(user, roleManager.Roles.Select(r => r.Name).Where(n => n == "User"));
                 }
             }
         }

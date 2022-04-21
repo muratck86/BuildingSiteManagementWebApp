@@ -5,7 +5,7 @@
 @inject UserManager<AppUser> UserManager
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("User"))
 {
     <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title=@TextsLang.ManageAccountHeader>@TextsLang.Hello @User.Identity.Name!</a>

@@ -15,6 +15,7 @@ namespace BuildingSiteManagementWebApp.Data.Repository.Abstracts
         IQueryable<T> GetAll(Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includes);
         void Update(T entity);
         Task DeleteAsync(Expression<Func<T, bool>> filter);
+        void Delete(T entity);
 
         Task CommitAsync();
     }

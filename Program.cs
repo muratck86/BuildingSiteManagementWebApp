@@ -28,13 +28,15 @@ namespace BuildingSiteManagementWebApp
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
                 try
                 {
-                    var context = services.GetRequiredService<ApplicationDbContext>();
-                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
-                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    var homeTypeManager = services.GetRequiredService<IHomeTypeManager>();
-                    await ContextSeed.SeedRolesAsync(userManager, roleManager);
-                    await ContextSeed.SeedSuperAdminAsync(userManager, roleManager);
-                    await ContextSeed.SeedHomeTypesAsync(homeTypeManager);
+                    //var context = services.GetRequiredService<ApplicationDbContext>();
+                    //var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    //var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    //var homeTypeManager = services.GetRequiredService<IHomeTypeManager>();
+                    //await ContextSeed.SeedRolesAsync(userManager, roleManager);
+                    //await ContextSeed.SeedSuperAdminAsync(userManager, roleManager);
+                    //await ContextSeed.SeedAdminAsync(userManager, roleManager);
+                    //await ContextSeed.SeedUserAsync(userManager, roleManager);
+                    //await ContextSeed.SeedHomeTypesAsync(homeTypeManager);
                 }
                 catch (Exception ex)
                 {

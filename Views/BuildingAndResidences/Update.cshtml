@@ -1,0 +1,39 @@
+﻿@using BuildingSiteManagementWebApp.Common.Constants
+@model BuildingInputModel
+@{
+    ViewData["Title"] = @TextsLang.EditBuilding;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-action="Update" asp-controller="BuildingAndResidences">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@TextsLang.BuildingName</th>
+                <th>@TextsLang.NumberOfFloors</th>
+                <th>@TextsLang.NumberOfBasements</th>
+                <th>@TextsLang.HasRoof</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input name="Name" asp-for="Name" class="form-control" asp-validation-for="InputModel.Name" />
+                </td>
+                <td>
+                    <input name="NumberOfFloors" asp-for="NumberOfFloors" class="form-control" asp-validation-for="InputModel.NumberOfFloors" />
+                </td>
+                <td>
+                    <input name="Basements" asp-for="Basements" class="form-control" asp-validation-for="InputModel.Basements" />
+                </td>
+                <td>
+                    <input name="HasRoof" asp-for="HasRoof" class="form-control" asp-validation-for="InputModel.HasRoof" />
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary" asp-route-buildingId=@ViewBag.buildingId>@TextsLang.Update</button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</form>

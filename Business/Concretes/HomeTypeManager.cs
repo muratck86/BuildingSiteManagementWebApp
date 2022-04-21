@@ -10,16 +10,9 @@ using System.Threading.Tasks;
 
 namespace BuildingSiteManagementWebApp.Business.Concretes
 {
-    public class HomeTypeManager : IHomeTypeManager
+    public class HomeTypeManager : BaseManager<HomeType>, IHomeTypeManager
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IRepository<HomeType> _repository;
-
-        public HomeTypeManager(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-            _repository = _serviceProvider.GetRequiredService<IRepository<HomeType>>();
-        }
+        public HomeTypeManager(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public async Task AddAsync(string name)
         {
@@ -42,18 +35,6 @@ namespace BuildingSiteManagementWebApp.Business.Concretes
             _repository.Update(entity);
             await _repository.CommitAsync();
         }
-        public async Task UpdateAsync(HomeType homeType)
-        {
-            _repository.Update(homeType);
-            await _repository.CommitAsync();
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            await _repository.DeleteAsync(t => t.Id == id);
-            await _repository.CommitAsync();
-
-        }
 
         public async Task DeleteAsync(string name)
         {
@@ -71,12 +52,6 @@ namespace BuildingSiteManagementWebApp.Business.Concretes
         {
             var result = await _repository.GetAsync(t => t.Id == id);
             return result.Name;
-        }
-
-        public async Task<HomeType> GetAsync(int id)
-        {
-            var result = await _repository.GetAsync(t => t.Id == id);
-            return result;
         }
     }
 }

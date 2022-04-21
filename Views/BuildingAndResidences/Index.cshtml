@@ -1,5 +1,6 @@
 ﻿@using BuildingSiteManagementWebApp.Common.Constants
-@model List<BuildingViewModel>
+@using static BuildingSiteManagementWebApp.Controllers.BuildingAndResidencesController
+@model BuildingModelPackage
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -15,11 +16,10 @@
             <th>@TextsLang.HasRoof</th>
             <th>@TextsLang.NumberOfResidences</th>
             <th>@TextsLang.Actions</th>
-
         </tr>
     </thead>
     <tbody>
-        @foreach (var building in Model)
+        @foreach (var building in Model.ViewModels)
         {
             <tr>
                 <td>@building.Name</td>
@@ -28,12 +28,49 @@
                 <td>@(building.HasRoof ? TextsLang.Exists : TextsLang.NotExists)</td>
                 <td>@building.NumberOfResidences</td>
                 <td>
-                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="Manage" asp-route-buildingId="@building.Id">@TextsLang.ManageResidences</a>
+                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="Manage" asp-route-buildingId="@building.Id">@TextsLang.Residences</a>
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="Update" asp-route-buildingId="@building.Id">@TextsLang.Edit</a>
                 </td>
                 <td>
                     <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="Delete" asp-route-buildingId="@building.Id">@TextsLang.Delete</a>
                 </td>
             </tr>
         }
+
     </tbody>
 </table>
+
+<form method="post" asp-action="Add" asp-controller="BuildingAndResidences">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@TextsLang.BuildingName</th>
+                <th>@TextsLang.NumberOfFloors</th>
+                <th>@TextsLang.NumberOfBasements</th>
+                <th>@TextsLang.HasRoof</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input name="Name" asp-for="InputModel.Name" class="form-control" asp-validation-for="InputModel.Name" />
+                </td>
+                <td>
+                    <input name="NumberOfFloors" asp-for="InputModel.NumberOfFloors" class="form-control" asp-validation-for="InputModel.NumberOfFloors" />
+                </td>
+                <td>
+                    <input name="Basements" asp-for="InputModel.Basements" class="form-control" asp-validation-for="InputModel.Basements" />
+                </td>
+                <td>
+                    <input name="HasRoof" asp-for="InputModel.HasRoof" class="form-control" asp-validation-for="InputModel.HasRoof" />
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary">@TextsLang.Add</button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</form>

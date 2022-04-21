@@ -1,0 +1,60 @@
+﻿@using BuildingSiteManagementWebApp.Common.Constants
+@model ResidenceViewModel
+@{
+    ViewData["Title"] = @Model.Building.Name + " - " + @TextsLang.Residence + " " + @Model.DoorNo + " - " + @TextsLang.Details;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string status = "";
+}
+@if (string.IsNullOrEmpty(Model.UserId))
+{
+    status = TextsLang.Empty;
+}
+else if (Model.OwnerId == Model.UserId)
+{
+    status = TextsLang.Self;
+}
+else
+{
+    status = Model.User.Name + " " + Model.User.LastName;
+}
+<h3>@ViewData["Title"]</h3>
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <td>@TextsLang.Floor</td>
+            <td>@Model.Floor</td>
+        </tr>
+        <tr>
+            <td>@TextsLang.ResidenceType</td>
+            <td>@Model.ResidenceType.HomeType.Name</td>
+        </tr>
+        <tr>
+            <td>@TextsLang.Owner</td>
+            <td>@(Model.Owner?.Name) @(Model.Owner?.LastName)</td>
+        </tr>
+        <tr>
+            <td>@TextsLang.Occupator</td>
+            <td>@status</td>
+        </tr>
+        <tr>
+            <td>@TextsLang.Residents</td>
+            <td>
+                <table>
+                    @if (Model.Residents is not null)
+                    {
+                        @foreach (var resident in Model.Residents)
+                        {
+                            <tr>
+                                <td>
+                                    @resident.Name + " " + @resident.LastName
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </table>
+            </td>
+        </tr>
+
+    </tbody>
+</table>

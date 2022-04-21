@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using BuildingSiteManagementWebApp.Common.Constants;
+using BuildingSiteManagementWebApp.Common.Helpers;
 using BuildingSiteManagementWebApp.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,13 +18,15 @@ namespace BuildingSiteManagementWebApp.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IMapper _mapper;
 
         public IndexModel(
             UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager)
+            SignInManager<AppUser> signInManager, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _mapper = mapper;
         }
 
         public string Username { get; set; }
@@ -33,22 +39,22 @@ namespace BuildingSiteManagementWebApp.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            [Required(ErrorMessage =TextsLang.IsRequired)]
+            [Display(Name = TextsLang.Name)]
+            public string Name  { get; set; }
+            [Required(ErrorMessage = TextsLang.IsRequired)]
+            [Display(Name =TextsLang.LastName)]
+            public string LastName { get; set; }
+            [Required(ErrorMessage = TextsLang.IsRequired)]
+            [Display(Name=TextsLang.NationalId)]
+            public string NationalId { get; set; }
         }
 
         private async Task LoadAsync(AppUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = userName;
-
-            Input = new InputModel
-            {
-                PhoneNumber = phoneNumber
-            };
+            user = await _userManager.FindByIdAsync(user.Id);
+            Username = user.UserName;
+            Input = _mapper.Map<InputModel>(user);
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -66,6 +72,9 @@ namespace BuildingSiteManagementWebApp.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+            var name = user.Name;
+            var lastName = user.LastName;
+            var natId = user.NationalId;
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -76,20 +85,29 @@ namespace BuildingSiteManagementWebApp.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
-
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            user.Name = Input.Name;
+            user.LastName = Input.LastName;
+            if (!ValidationHelper.IsValidNationalId(Input.NationalId))
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
+                StatusMessage = TextsLang.InvalidNationalId;
+                return RedirectToPage();
+            }
+            user.NationalId = Input.NationalId;
+            if (name == Input.Name && lastName == Input.LastName && natId == Input.NationalId)
+            {
+                StatusMessage = TextsLang.NothingChanged;
+                return RedirectToPage();
+
+            }
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                StatusMessage = TextsLang.UnexpectedErrorUpdate;
+                return RedirectToPage();
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = TextsLang.UpdateSuccessful;
             return RedirectToPage();
         }
     }

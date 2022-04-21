@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using BuildingSiteManagementWebApp.Common.Constants;
+using System.Net.Mail;
+using Microsoft.EntityFrameworkCore;
+using BuildingSiteManagementWebApp.Common.Helpers;
 
 namespace BuildingSiteManagementWebApp.Areas.Identity.Pages.Account
 {
@@ -45,7 +48,6 @@ namespace BuildingSiteManagementWebApp.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
             public string Email { get; set; }
 
             [Required]
@@ -55,6 +57,7 @@ namespace BuildingSiteManagementWebApp.Areas.Identity.Pages.Account
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
+
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -81,7 +84,15 @@ namespace BuildingSiteManagementWebApp.Areas.Identity.Pages.Account
         
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
+                AppUser user = null;
+                if (ValidationHelper.IsValidEmail(Input.Email))
+                    user = await _userManager.FindByEmailAsync(Input.Email);
+                if (user == null)
+                    user = await _userManager.FindByNameAsync(Input.Email);
+                if (user == null && ValidationHelper.IsValidNationalId(Input.Email))
+                    user = await _userManager.Users.SingleOrDefaultAsync(u => u.NationalId == Input.Email);
+                if (user == null)
+                    user = new AppUser();
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: false);
@@ -98,7 +109,7 @@ namespace BuildingSiteManagementWebApp.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, TextsLang.InvalidLogin);
                     return Page();
                 }
             }

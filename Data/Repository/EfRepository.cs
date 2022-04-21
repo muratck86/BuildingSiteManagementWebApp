@@ -1,5 +1,6 @@
 ﻿using BuildingSiteManagementWebApp.Data.Entities;
 using BuildingSiteManagementWebApp.Data.Repository.Abstracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -52,6 +53,7 @@ namespace BuildingSiteManagementWebApp.Data.Repository.Concretes
             return q.Where(filter);
         }
 
+        [Authorize(Roles = "Admin")]
         public void Update(T entity)
         {
             Context.Entry(entity).State = EntityState.Modified;
@@ -60,6 +62,10 @@ namespace BuildingSiteManagementWebApp.Data.Repository.Concretes
         public async Task DeleteAsync(Expression<Func<T, bool>> filter)
         {
             var entity =await Context.Set<T>().SingleOrDefaultAsync(filter);
+            Context.Entry(entity).State = EntityState.Deleted;
+        }
+        public void Delete(T entity)
+        {
             Context.Entry(entity).State = EntityState.Deleted;
         }
 

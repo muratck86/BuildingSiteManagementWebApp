@@ -24,6 +24,7 @@ namespace BuildingSiteManagementWebApp.Data
                 entity.Property(u => u.Name).IsRequired();
                 entity.Property(u => u.LastName).IsRequired();
                 entity.HasIndex(u => u.Email).IsUnique();
+                //entity.Navigation(u => new { u.OwnedResidences, u.RentedResidences }).AutoInclude();
             });
             builder.Entity<IdentityRole>(entity =>
             {
@@ -56,6 +57,7 @@ namespace BuildingSiteManagementWebApp.Data
                 entity.ToTable("Buildings")
                     .Property(b => b.NumberOfFloors).IsRequired();
                 entity.HasIndex(b => b.Name).IsUnique();
+                entity.Navigation(b => b.Residences).AutoInclude();
             });
             builder.Entity<HomeType>(entity =>
             {
@@ -77,12 +79,21 @@ namespace BuildingSiteManagementWebApp.Data
             {
                 entity.ToTable("Payments")
                     .Property(p => p.UserId).IsRequired();
+                entity.Navigation(p => p.User).AutoInclude();
+                entity.Navigation(p => p.Invoice).AutoInclude();
             });
             builder.Entity<Residence>(entity =>
             {
                 entity.ToTable("Residences")
                     .HasOne(r => r.Owner).WithMany(u => u.OwnedResidences).HasForeignKey(r => r.OwnerId).OnDelete(DeleteBehavior.Restrict);
                     entity.HasOne(r => r.User).WithMany(u => u.RentedResidences).HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.Restrict);
+                    entity.HasOne(r => r.Building).WithMany(b => b.Residences).OnDelete(DeleteBehavior.Restrict);
+                //entity.Navigation(r => new { r.Owner, r.Building, r.User, r.ResidenceType }).AutoInclude();
+                entity.Navigation(r => r.Owner).AutoInclude();
+                entity.Navigation(r => r.Building).AutoInclude();
+                entity.Navigation(r => r.User).AutoInclude();
+                entity.Navigation(r => r.ResidenceType).AutoInclude();
+
             });
             builder.Entity<ResidenceInvoice>(entity =>
             {
@@ -91,11 +102,11 @@ namespace BuildingSiteManagementWebApp.Data
             });
             builder.Entity<ResidenceType>(entity =>
             {
-                entity.ToTable("ResidenceTypes");
+                entity.ToTable("ResidenceTypes").Navigation(e => e.HomeType).AutoInclude();
             });
             builder.Entity<Resident>(entity =>
             {
-                entity.ToTable("Residents");
+                entity.ToTable("Residents"); //.Navigation(r => new { r.RentedResidences, r.OwnedResidences, r.Residence }).AutoInclude();
             });
             builder.Entity<SiteInvoice>(entity =>
             {
@@ -107,6 +118,7 @@ namespace BuildingSiteManagementWebApp.Data
                 entity.ToTable("Vehicles")
                     .Property(v => v.Plate).IsRequired();
                 entity.HasIndex(v => v.Plate).IsUnique();
+                entity.Navigation(v => v.Resident).AutoInclude();
             });
             builder.Entity<BaseInvoice>(entity =>
             {
