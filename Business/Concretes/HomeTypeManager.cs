@@ -42,7 +42,7 @@ namespace BuildingSiteManagementWebApp.Business.Concretes
             await _repository.CommitAsync();
         }
 
-        public async Task<List<string>> GetAllNames()
+        public async Task<List<string>> GetAllNamesAsync()
         {
             var result = await _repository.GetAll(null).Select(t => t.Name).ToListAsync();
             return result;

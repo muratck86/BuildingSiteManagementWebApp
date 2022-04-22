@@ -12,6 +12,6 @@ namespace BuildingSiteManagementWebApp.Models
         [Required]
         public int DoorNo { get; set; }
         [Required]
-        public ResidenceType ResidenceType { get; set; }
+        public int ResidenceType { get; set; }
     }
 }

@@ -7,6 +7,7 @@ namespace BuildingSiteManagementWebApp.Models
     {
         [Required(ErrorMessage = TextsLang.IsRequired)]
         [Display(Name = TextsLang.Name)]
+        [StringLength(100, ErrorMessage = TextsLang.IsRequired,MinimumLength = 1)]
         public string Name { get; set; }
         [Required(ErrorMessage = TextsLang.IsRequired)]
         [Display(Name = TextsLang.NumberOfFloors)]

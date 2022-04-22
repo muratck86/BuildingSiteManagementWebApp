@@ -86,6 +86,8 @@
         public const string Occupator = "Kullanan";
         public const string OwnerOf = "Maliği";
         public const string OwnerInfoMissing = "Malik Bilgisi Yok";
+        public const string SelectHomeType = "Bağımsız bölüm tipi seç";
+        public const string EditResidence = "Bağımsız bölüm düzenle";
 
 
     }

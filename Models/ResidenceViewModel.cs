@@ -16,6 +16,6 @@ namespace BuildingSiteManagementWebApp.Models
         public string UserId { get; set; }
         public AppUser User { get; set; }
         public List<Resident> Residents { get; set; }
-        public ResidenceType ResidenceType { get; set; }
+        public string ResidenceType { get; set; }
     }
 }

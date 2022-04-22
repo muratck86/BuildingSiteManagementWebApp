@@ -28,13 +28,13 @@
                 <td>@(building.HasRoof ? TextsLang.Exists : TextsLang.NotExists)</td>
                 <td>@building.NumberOfResidences</td>
                 <td>
-                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="Manage" asp-route-buildingId="@building.Id">@TextsLang.Residences</a>
+                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="Residences" asp-route-buildingId="@building.Id">@TextsLang.Residences</a>
                 </td>
                 <td>
-                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="Update" asp-route-buildingId="@building.Id">@TextsLang.Edit</a>
+                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="UpdateBuilding" asp-route-buildingId="@building.Id">@TextsLang.Edit</a>
                 </td>
                 <td>
-                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="Delete" asp-route-buildingId="@building.Id">@TextsLang.Delete</a>
+                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="DeleteBuilding" asp-route-buildingId="@building.Id">@TextsLang.Delete</a>
                 </td>
             </tr>
         }
@@ -42,7 +42,7 @@
     </tbody>
 </table>
 
-<form method="post" asp-action="Add" asp-controller="BuildingAndResidences">
+<form method="post" asp-action="AddBuilding" asp-controller="BuildingAndResidences">
     <table class="table table-striped">
         <thead>
             <tr>
@@ -74,3 +74,6 @@
 
     </table>
 </form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

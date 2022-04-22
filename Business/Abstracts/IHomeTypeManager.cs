@@ -11,6 +11,6 @@ namespace BuildingSiteManagementWebApp.Business.Abstracts
         Task ChangeNameAsync(int id, string newName);
         Task ChangeNameAsync(string currentName, string newName);
         Task<string> GetNameAsync(int id);
-        Task<List<string>> GetAllNames();
+        Task<List<string>> GetAllNamesAsync();
     }
 }

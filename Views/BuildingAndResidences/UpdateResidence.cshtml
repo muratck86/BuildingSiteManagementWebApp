@@ -1,0 +1,48 @@
+﻿@using BuildingSiteManagementWebApp.Common.Constants
+@model ResidenceInputModel
+@{
+    ViewData["Title"] = @TextsLang.EditResidence;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-action="UpdateResidence" asp-controller="BuildingAndResidences">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@TextsLang.DoorNo</th>
+                <th>@TextsLang.Floor</th>
+                <th>@TextsLang.ResidenceType</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input name="DoorNo" asp-for="DoorNo" class="form-control" asp-validation-for="InputModel.DoorNo" />
+                </td>
+                <td>
+                    <input name="Floor" asp-for="Floor" class="form-control" asp-validation-for="InputModel.Floor" />
+                </td>
+                <td>
+                    <select name="ResidenceType" asp-for="ResidenceType" class="form-control" asp-validation-for="ResidenceType">
+                        <option value="">@TextsLang.SelectHomeType</option>
+                        @foreach (var option in ViewBag.homeTypes)
+                        {
+                            @if (Model.ResidenceType == option.Id)
+                            {
+                                <option selected="selected" value=@option.Id>@option.Name</option>
+                            }
+                            <option value=@option.Id>@option.Name</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary" asp-route-residenceId=@ViewBag.residenceId>@TextsLang.Update</button>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

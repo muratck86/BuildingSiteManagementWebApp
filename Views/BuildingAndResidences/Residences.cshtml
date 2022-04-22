@@ -1,0 +1,77 @@
+﻿@using BuildingSiteManagementWebApp.Common.Constants
+@using static BuildingSiteManagementWebApp.Controllers.BuildingAndResidencesController
+@model ResidenceModelPackage
+@{
+    ViewData["Title"] = @ViewBag.building.Name + " " + @TextsLang.Residences;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h4>@ViewBag.building.Name @TextsLang.Residences</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@TextsLang.Floor</th>
+            <th>@TextsLang.DoorNo</th>
+            <th>@TextsLang.ResidenceType</th>
+            <th>@TextsLang.Occupator</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var residence in Model.ViewModels)
+        {
+            <tr>
+                <td>@residence.Floor</td>
+                <td>@residence.DoorNo</td>
+                <td>@residence.ResidenceType</td>
+                <td>@(residence.Owner == null ? TextsLang.OwnerInfoMissing : residence.User == null ? TextsLang.Empty : residence.OwnerId == residence.UserId ? TextsLang.Self : TextsLang.Tenant)</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="ResidenceDetails" asp-route-residenceId="@residence.Id">@TextsLang.Details</a>
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="UpdateResidence" asp-route-residenceId="@residence.Id">@TextsLang.Edit</a>
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="BuildingAndResidences" asp-action="DeleteResidence" asp-route-residenceId="@residence.Id">@TextsLang.Delete</a>
+                </td>
+            </tr>
+
+        }
+
+    </tbody>
+</table>
+<form method="post" asp-action="AddResidence" asp-route-buildingId="@ViewBag.building.Id" asp-controller="BuildingAndResidences">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@TextsLang.Floor</th>
+                <th>@TextsLang.DoorNo</th>
+                <th>@TextsLang.ResidenceType</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input name="Floor" asp-for="InputModel.Floor" class="form-control" asp-validation-for="InputModel.Floor" />
+                </td>
+                <td>
+                    <input name="DoorNo" asp-for="InputModel.DoorNo" class="form-control" asp-validation-for="InputModel.DoorNo" />
+                </td>
+                <td>
+                    <select name="ResidenceType" asp-for="InputModel.ResidenceType" class="form-control" asp-validation-for="InputModel.ResidenceType">
+                        <option value="">@TextsLang.SelectHomeType</option>
+                        @foreach (var option in ViewBag.homeTypes)
+                        {
+                            <option value=@option.Id>@option.Name</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary">@TextsLang.Add</button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</form>
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}
