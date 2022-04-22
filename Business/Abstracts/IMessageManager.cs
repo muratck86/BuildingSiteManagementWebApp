@@ -8,6 +8,5 @@ namespace BuildingSiteManagementWebApp.Business.Abstracts
     {
         Task SendMessageToAdmin(Message message);
         Task SendMessageFromAdmin(Message message);
-        Task<Message> GetById(int id);
     }
 }

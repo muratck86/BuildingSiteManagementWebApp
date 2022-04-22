@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\GeneralSettings\" />
+    <Folder Include="Views\People\" />
   </ItemGroup>
 
 </Project>
