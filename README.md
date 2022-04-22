@@ -16,6 +16,8 @@
 # Managing user profile
   - Only admin can change personal info, users without "Admin" role may change their contact and login information only.
 ![image](https://user-images.githubusercontent.com/59605826/164702588-2ea397e1-02cf-49a4-a8a7-ddd09b1ff440.png)
+![image](https://user-images.githubusercontent.com/59605826/164702876-42fdc7d5-b0e9-4481-9fc6-7a64cd894e87.png)
+
 
 ## Managing Residences
 This menu can only be viewed and used by the user who have "Admin" role.
